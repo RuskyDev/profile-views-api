@@ -2,13 +2,13 @@ import express from "express";
 import { z } from "zod";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-const views = new Map<string, number>();
+const views = new Map();
 
 const querySchema = z.object({
   username: z.string().trim().min(1),
-  color: z.string().trim().min(1).default("669bbc"),
+  color: z.string().trim().min(1).default("blue"),
   style: z
     .enum([
       "flat",
@@ -39,7 +39,7 @@ app.get("/", async (req, res) => {
     const badgeUrl = new URL(
       `https://img.shields.io/badge/${encodeURIComponent(
         "Profile Views"
-      )}-${encodeURIComponent(count.toString())}-${encodeURIComponent(color)}`
+      )}-${encodeURIComponent(count)}-${encodeURIComponent(color)}`
     );
 
     badgeUrl.searchParams.set("style", style);
